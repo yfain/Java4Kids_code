@@ -26,8 +26,13 @@ public class MyContacts {
         friends.add(friend1);
         friends.add(friend2);
 
+        friends.forEach(friend -> System.out.println(friend));
+
+        /* an old way to loop through a collection
         for (ContactDetail friend: friends){
             System.out.println(friend);
-        }
+        }*/
+
+
     }
 }

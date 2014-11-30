@@ -1,4 +1,4 @@
-package solutions;
+package solutions.lambdapets;
 
 /**
  * Created by NewProgrammer on 3/28/15.

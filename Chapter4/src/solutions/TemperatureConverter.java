@@ -1,3 +1,5 @@
+package solutions;
+
 /**
  * Created by yfain11 on 8/12/14.
  */

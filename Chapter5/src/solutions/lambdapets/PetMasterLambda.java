@@ -1,4 +1,4 @@
-package solutions;
+package solutions.lambdapets;
 
 /**
  * Created by NewProgrammer on 3/28/15.
@@ -8,7 +8,7 @@ public class PetMasterLambda {
 
 
         // dogs
-        Talkative dogTalkRules = (name) -> {
+        Talkative dogTalkRules = name -> {
             return  "I'm a dog. My name is " + name;
         };
 
@@ -17,7 +17,7 @@ public class PetMasterLambda {
         System.out.println(myDog.speakup());
 
         // parrots
-        Talkative parrotTalkRules = (name) -> {
+        Talkative parrotTalkRules = name -> {
             return  "I'm a parrot. Don't call me " + name;
         };
 
