@@ -15,7 +15,7 @@ public class CreatePlayStation4Objects {
         PlayStation4 secondPlayStation = new PlayStation4();
         secondPlayStation.hardDiskSize = "1TB";
 
-        // call the method shareOnFacebook
+        // call the method shareOnTwitter
         secondPlayStation.shareOnTwitter();
     }
 }
