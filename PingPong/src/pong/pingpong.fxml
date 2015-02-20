@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+
+<Group fx:id="theGroup" focusTraversable="true" onKeyReleased="#keyReleasedHandler" xmlns="http://javafx.com/javafx/8"
+       xmlns:fx="http://javafx.com/fxml/1" fx:controller="pong.PingPongController">
+   <children>
+      <Button />
+      <Rectangle fx:id="table" fill="#31b287" height="250" stroke="BLACK" strokeType="INSIDE" width="400" />
+      <Rectangle fx:id="compPaddle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" layoutX="24.0" layoutY="98.0"
+                 stroke="BLACK" strokeType="INSIDE" width="10.0" />
+      <Rectangle fx:id="kidPaddle" arcHeight="5.0" arcWidth="5.0" fill="#f0ff1f" height="50.0" layoutX="365.0" layoutY="98.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+      <Circle fx:id="ball" fill="#ff1f35" centerX="191.0" centerY="123.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" />
+   </children>
+</Group>
