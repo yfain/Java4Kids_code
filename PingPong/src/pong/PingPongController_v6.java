@@ -11,25 +11,20 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
 import java.util.Random;
 
-/*
- This version of the controller implements 6 steps of the game strategy.
- It also prints the score on the system's console.
- Your project assignment is to display the score right on the ping-pong table and
-  implement the handler for the N-key to start a new game.
+// This version of the controller modifies the method moveTheBall to change not only the x-, but y-coordinate of the ball as well
 
-*/
-public class PingPongController {
+public class PingPongController_v6 {
 
-    final int PADDLE_MOVEMENT_INCREMENT = 7;
-    final int BALL_MOVEMENT_INCREMENT = 3;
+    final int PADDLE_MOVEMENT_INCREMENT = 6;
+    final int BALL_MOVEMENT_INCREMENT = 5;
 
     double centerTableY;
 
     DoubleProperty currentKidPaddleY = new SimpleDoubleProperty();
-    DoubleProperty currentComputerPaddleY = new SimpleDoubleProperty();
-    double initialComputerPaddleY;
+
 
     DoubleProperty ballCenterX = new SimpleDoubleProperty();
     DoubleProperty ballCenterY = new SimpleDoubleProperty();
@@ -38,9 +33,6 @@ public class PingPongController {
     double allowedPaddleBottomY;
 
     Timeline timeline;
-
-    int computerScore;
-    int kidScore;
 
     @FXML
     Rectangle table;
@@ -59,11 +51,6 @@ public class PingPongController {
 
         ball.centerXProperty().bind(ballCenterX);
         ball.centerYProperty().bind(ballCenterY);
-
-
-        initialComputerPaddleY = compPaddle.getLayoutY();
-        currentComputerPaddleY.set(initialComputerPaddleY);
-        compPaddle.layoutYProperty().bind(currentComputerPaddleY);
 
 
         allowedPaddleTopY = PADDLE_MOVEMENT_INCREMENT;
@@ -113,6 +100,7 @@ public class PingPongController {
         System.out.println("Processing the N key");
     }
 
+    // This method serves the ball
     private void process_key_S() {
 
         ballCenterY.set(currentKidPaddleY.doubleValue() + kidPaddle.getHeight()/2);
@@ -128,6 +116,7 @@ public class PingPongController {
 
         final boolean isServingFromTop = (ballCenterY.get() <= centerTableY)?true:false;
 
+
         KeyFrame keyFrame = new KeyFrame(new Duration(10), event -> {
 
             if (ballCenterX.get() >= -20) {
@@ -137,63 +126,13 @@ public class PingPongController {
                 if (isServingFromTop) {
                     ballCenterY.set(ballCenterY.get() + randomYincrement);
 
-                    currentComputerPaddleY.set( currentComputerPaddleY.get() + 1);
-
                 } else {
-                    ballCenterY.set(ballCenterY.get() - randomYincrement);
-
-                    currentComputerPaddleY.set(currentComputerPaddleY.get() - 1);
+                    ballCenterY.set(ballCenterY.get() + randomYincrement);
                 }
 
-                if (checkForBallPaddleContact(compPaddle)){
-                    timeline.stop();
-                    currentComputerPaddleY.set(initialComputerPaddleY);
-                    bounceTheBall();
-                };
-
             } else {
                 timeline.stop();
 
-                updateScore();
-
-                currentComputerPaddleY.set(initialComputerPaddleY);
-            }
-        });
-
-        timeline = new Timeline(keyFrame);
-        timeline.setCycleCount(Timeline.INDEFINITE);
-
-        timeline.play();
-    }
-
-
-    private boolean checkForBallPaddleContact(Rectangle paddle){
-
-        if (ball.intersects(paddle.getBoundsInParent())){
-            return true;
-        } else {
-             return false;
-        }
-    }
-
-    private void bounceTheBall() {
-
-        double theBallOffTheTableX = table.getWidth() + 20;
-
-        KeyFrame keyFrame = new KeyFrame(new Duration(10), event -> {
-
-            if (ballCenterX.get() < theBallOffTheTableX) {
-
-                ballCenterX.set(ballCenterX.get() + BALL_MOVEMENT_INCREMENT);
-
-                if (checkForBallPaddleContact(kidPaddle)){
-                    timeline.stop();
-                    moveTheBall();
-                };
-
-            } else {
-                timeline.stop();
-                updateScore();
             }
 
         });
@@ -203,22 +142,5 @@ public class PingPongController {
 
         timeline.play();
 
-      }
-
-    private void updateScore(){
-
-        if (ballCenterX.get() > table.getWidth()){
-            // Computer bounced the ball and the Kid didn't hit it back
-            computerScore ++;
-        } else if (ballCenterY.get() > 0 && ballCenterY.get() <= table.getHeight()){
-            // The Kid served the ball and Computer didn't hit it back
-            kidScore++;
-        } else{
-            // The Kid served the ball off the table
-            computerScore++;
-        }
-
-
-        System.out.println("Computer: " + computerScore + ", Kid: " + kidScore);
     }
 }

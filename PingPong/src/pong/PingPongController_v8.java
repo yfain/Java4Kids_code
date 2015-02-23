@@ -11,16 +11,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
 import java.util.Random;
 
 /*
- This version of the controller implements 6 steps of the game strategy.
- It also prints the score on the system's console.
- Your project assignment is to display the score right on the ping-pong table and
-  implement the handler for the N-key to start a new game.
-
+ This version of the controller adds the bouncing of the ball by the computer's paddle
+ and sending the ball back to the computer if the Kid's paddle contacts the ball.
+ This code doesn't implement keeping the game score and starting a new game.
 */
-public class PingPongController {
+public class PingPongController_v8 {
 
     final int PADDLE_MOVEMENT_INCREMENT = 7;
     final int BALL_MOVEMENT_INCREMENT = 3;
@@ -38,9 +37,6 @@ public class PingPongController {
     double allowedPaddleBottomY;
 
     Timeline timeline;
-
-    int computerScore;
-    int kidScore;
 
     @FXML
     Rectangle table;
@@ -154,8 +150,6 @@ public class PingPongController {
             } else {
                 timeline.stop();
 
-                updateScore();
-
                 currentComputerPaddleY.set(initialComputerPaddleY);
             }
         });
@@ -193,7 +187,6 @@ public class PingPongController {
 
             } else {
                 timeline.stop();
-                updateScore();
             }
 
         });
@@ -204,21 +197,4 @@ public class PingPongController {
         timeline.play();
 
       }
-
-    private void updateScore(){
-
-        if (ballCenterX.get() > table.getWidth()){
-            // Computer bounced the ball and the Kid didn't hit it back
-            computerScore ++;
-        } else if (ballCenterY.get() > 0 && ballCenterY.get() <= table.getHeight()){
-            // The Kid served the ball and Computer didn't hit it back
-            kidScore++;
-        } else{
-            // The Kid served the ball off the table
-            computerScore++;
-        }
-
-
-        System.out.println("Computer: " + computerScore + ", Kid: " + kidScore);
-    }
 }

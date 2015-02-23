@@ -1,7 +1,6 @@
 package pong;
 
 import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
@@ -13,11 +12,12 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-// This version of the controller adds the method moveTheBall: the Timeline with horizontal movement to  PingPongController_v3
+// This version of the controller modifies the method moveTheBall to use an event handler implemented as lambda
 
-public class PingPongController_v4 {
+public class PingPongController_v5 {
 
     final int PADDLE_MOVEMENT_INCREMENT = 6;
+    final int BALL_MOVEMENT_INCREMENT = 5;
 
     DoubleProperty currentKidPaddleY = new SimpleDoubleProperty();
 
@@ -103,17 +103,26 @@ public class PingPongController_v4 {
         ballCenterX.set(kidPaddle.getLayoutX());
 
         moveTheBall();
-
     }
 
     private void moveTheBall(){
 
-        timeline = new Timeline();
-        timeline.setCycleCount(1);
 
-        KeyValue keyValue = new KeyValue(ballCenterX, 0);
-        KeyFrame keyFrame = new KeyFrame(new Duration(1000), keyValue);
-        timeline.getKeyFrames().add(keyFrame);
+        KeyFrame keyFrame = new KeyFrame(new Duration(10), event -> {
+
+            System.out.println(ballCenterX);
+            if (ballCenterX.get() > BALL_MOVEMENT_INCREMENT) {
+
+                ballCenterX.set(ballCenterX.get() - BALL_MOVEMENT_INCREMENT);
+
+            } else {
+                timeline.stop();
+            }
+
+        });
+
+        timeline = new Timeline(keyFrame);
+        timeline.setCycleCount(Timeline.INDEFINITE);
 
         timeline.play();
 

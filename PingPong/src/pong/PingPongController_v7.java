@@ -11,19 +11,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+
 import java.util.Random;
 
-/*
- This version of the controller implements 6 steps of the game strategy.
- It also prints the score on the system's console.
- Your project assignment is to display the score right on the ping-pong table and
-  implement the handler for the N-key to start a new game.
+// This version of the controller adds the movements of the computer's paddle
 
-*/
-public class PingPongController {
+public class PingPongController_v7 {
 
-    final int PADDLE_MOVEMENT_INCREMENT = 7;
-    final int BALL_MOVEMENT_INCREMENT = 3;
+    final int PADDLE_MOVEMENT_INCREMENT = 6;
+    final int BALL_MOVEMENT_INCREMENT = 5;
 
     double centerTableY;
 
@@ -38,9 +34,6 @@ public class PingPongController {
     double allowedPaddleBottomY;
 
     Timeline timeline;
-
-    int computerScore;
-    int kidScore;
 
     @FXML
     Rectangle table;
@@ -113,6 +106,7 @@ public class PingPongController {
         System.out.println("Processing the N key");
     }
 
+    // This method serves the ball
     private void process_key_S() {
 
         ballCenterY.set(currentKidPaddleY.doubleValue() + kidPaddle.getHeight()/2);
@@ -145,16 +139,8 @@ public class PingPongController {
                     currentComputerPaddleY.set(currentComputerPaddleY.get() - 1);
                 }
 
-                if (checkForBallPaddleContact(compPaddle)){
-                    timeline.stop();
-                    currentComputerPaddleY.set(initialComputerPaddleY);
-                    bounceTheBall();
-                };
-
             } else {
                 timeline.stop();
-
-                updateScore();
 
                 currentComputerPaddleY.set(initialComputerPaddleY);
             }
@@ -164,61 +150,5 @@ public class PingPongController {
         timeline.setCycleCount(Timeline.INDEFINITE);
 
         timeline.play();
-    }
-
-
-    private boolean checkForBallPaddleContact(Rectangle paddle){
-
-        if (ball.intersects(paddle.getBoundsInParent())){
-            return true;
-        } else {
-             return false;
-        }
-    }
-
-    private void bounceTheBall() {
-
-        double theBallOffTheTableX = table.getWidth() + 20;
-
-        KeyFrame keyFrame = new KeyFrame(new Duration(10), event -> {
-
-            if (ballCenterX.get() < theBallOffTheTableX) {
-
-                ballCenterX.set(ballCenterX.get() + BALL_MOVEMENT_INCREMENT);
-
-                if (checkForBallPaddleContact(kidPaddle)){
-                    timeline.stop();
-                    moveTheBall();
-                };
-
-            } else {
-                timeline.stop();
-                updateScore();
-            }
-
-        });
-
-        timeline = new Timeline(keyFrame);
-        timeline.setCycleCount(Timeline.INDEFINITE);
-
-        timeline.play();
-
-      }
-
-    private void updateScore(){
-
-        if (ballCenterX.get() > table.getWidth()){
-            // Computer bounced the ball and the Kid didn't hit it back
-            computerScore ++;
-        } else if (ballCenterY.get() > 0 && ballCenterY.get() <= table.getHeight()){
-            // The Kid served the ball and Computer didn't hit it back
-            kidScore++;
-        } else{
-            // The Kid served the ball off the table
-            computerScore++;
-        }
-
-
-        System.out.println("Computer: " + computerScore + ", Kid: " + kidScore);
     }
 }
